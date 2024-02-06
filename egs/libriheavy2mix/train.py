@@ -50,6 +50,7 @@ def main(conf):
         mix2spk=conf["train"]["train_mix2spk"],
         spk2src=conf["train"]["train_spk2src"],
         spk2spk=conf["train"]["train_spk2spk"],
+        enrollments=None,
         sample_rate=conf["train"]["train_sample_rate"],
         segment=conf["train"]["train_segment"],
         segment_aux=conf["train"]["train_segment_aux"],

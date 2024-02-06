@@ -1,24 +1,24 @@
 # filterbank config
 filterbank:
   n_filters: 512
-  kernel_size: 16
+  kernel_size: 40
   stride: 8
 # Network config
 masknet:
   n_blocks: 8
   n_repeats: 3
   mask_act: relu
-  bn_chan: 128
-  skip_chan: 128
+  bn_chan: 256
+  skip_chan: 256
   hid_chan: 512
 enroll:
   i_adapt_layer: 7
   adapt_layer_type: mul
-  adapt_enroll_dim: 128
+  adapt_enroll_dim: 256
 # Training config
 training:
   epochs: 200
-  batch_size: 10
+  batch_size: 8
   num_workers: 4
   half_lr: yes
   early_stop: yes
@@ -28,7 +28,7 @@ training:
 optim:
   optimizer: adam
   lr: 0.001
-  weight_decay: 0.
+  weight_decay: 0.00001
 
 # Data config
 train:

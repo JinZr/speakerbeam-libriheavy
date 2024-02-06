@@ -82,12 +82,12 @@ def main(conf):
         num_workers=conf["training"]["num_workers"],
         drop_last=True,
     )
-    conf["masknet"].update({"n_src": conf["data"]["n_src"]})
+    conf["masknet"].update({"n_src": 2})
 
     model = TimeDomainSpeakerBeam(
         **conf["filterbank"],
         **conf["masknet"],
-        sample_rate=conf["data"]["sample_rate"],
+        sample_rate=conf["train"]["train_sample_rate"],
         **conf["enroll"]
     )
     optimizer = make_optimizer(model.parameters(), **conf["optim"])

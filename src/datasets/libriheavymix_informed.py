@@ -103,6 +103,8 @@ class LibriheavyMixInformed(Dataset):
             self.target_wav_list = lines_to_dict_spk2spk(spk2spk)
             self.mix2spk = lines_to_dict(mix2spk)
             self.mixed_wav_list = lines_to_dict(mixscp)
+            self.segment = 10
+            self.segment_aux = 10
 
     def __len__(self):
         if self.train:
@@ -153,9 +155,9 @@ class LibriheavyMixInformed(Dataset):
                 self.mixed_wav_list[enroll_key], sr=self.sample_rate
             )
 
-            mixture = torch.from_numpy(mixture)
-            source = torch.from_numpy(source)
-            enroll = torch.from_numpy(enroll)
+            mixture = torch.from_numpy(mixture[: self.sample_rate * self.segment])
+            source = torch.from_numpy(source[: self.sample_rate * self.segment])
+            enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
 
         return mixture, source, enroll
 

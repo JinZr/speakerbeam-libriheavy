@@ -146,7 +146,7 @@ class LibriheavyMixInformed(Dataset):
             source = torch.from_numpy(source[start:stop])
 
             e_start, e_stop = self._get_segment_start_stop(
-                self.segment * self.sample_rate, len(mixture)
+                self.segment * self.sample_rate, len(enroll)
             )
             enroll = torch.from_numpy(enroll[e_start:e_stop])
 

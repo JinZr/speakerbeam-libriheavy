@@ -7,23 +7,27 @@
 # which is released under the following MIT license:
 # https://github.com/asteroid-team/asteroid/blob/master/LICENSE
 
-import os
 import argparse
 import json
+import os
 
+import pytorch_lightning as pl
 import torch
 import torch.nn as nn
+from asteroid.engine.optimizers import make_optimizer
+from asteroid.losses import singlesrc_neg_sisdr
+from pytorch_lightning.callbacks import (
+    EarlyStopping,
+    LearningRateMonitor,
+    ModelCheckpoint,
+)
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
-from pytorch_lightning.callbacks import LearningRateMonitor
 
-from models.td_speakerbeam import TimeDomainSpeakerBeam
-from datasets.librimix_informed import LibriMixInformed
-from asteroid.engine.optimizers import make_optimizer
 from models.system import SystemInformed
-from asteroid.losses import singlesrc_neg_sisdr
+from models.td_speakerbeam import TimeDomainSpeakerBeam
+
+from .datasets.libriheavymix_informed import LibriheavyMixInformed
 
 # Keys which are not in the conf.yml file can be added here.
 # In the hierarchical dictionary created when parsing, the key `key` can be
@@ -42,22 +46,25 @@ def neg_sisdr_loss_wrapper(est_targets, targets):
 
 
 def main(conf):
-    train_set = LibriMixInformed(
-        csv_dir=conf["data"]["train_dir"],
-        task=conf["data"]["task"],
-        sample_rate=conf["data"]["sample_rate"],
-        n_src=conf["data"]["n_src"],
-        segment=conf["data"]["segment"],
-        segment_aux=conf["data"]["segment_aux"],
+    train_set = LibriheavyMixInformed(
+        mixscp=conf["train"]["mixscp"],
+        mix2spk=conf["train"]["mix2spk"],
+        spk2src=conf["train"]["spk2src"],
+        spk2spk=conf["train"]["spk2spk"],
+        sample_rate=conf["train"]["sample_rate"],
+        segment=conf["train"]["segment"],
+        segment_aux=conf["train"]["segment_aux"],
+        train=True,
     )
 
-    val_set = LibriMixInformed(
-        csv_dir=conf["data"]["valid_dir"],
-        task=conf["data"]["task"],
-        sample_rate=conf["data"]["sample_rate"],
-        n_src=conf["data"]["n_src"],
-        segment=conf["data"]["segment"],
-        segment_aux=conf["data"]["segment_aux"],
+    val_set = LibriheavyMixInformed(
+        mixscp=conf["dev"]["mixscp"],
+        mix2spk=conf["dev"]["mix2spk"],
+        spk2src=conf["dev"]["spk2src"],
+        spk2spk=conf["dev"]["spk2spk"],
+        enrollments=conf["dev"]["enrollments"],
+        sample_rate=conf["dev"]["sample_rate"],
+        train=False,
     )
 
     train_loader = DataLoader(
@@ -158,9 +165,10 @@ def main(conf):
 
 
 if __name__ == "__main__":
-    import yaml
     from pprint import pprint
-    from asteroid.utils import prepare_parser_from_dict, parse_args_as_dict
+
+    import yaml
+    from asteroid.utils import parse_args_as_dict, prepare_parser_from_dict
 
     # We start with opening the config file conf.yml as a dictionary from
     # which we can create parsers. Each top level key in the dictionary defined

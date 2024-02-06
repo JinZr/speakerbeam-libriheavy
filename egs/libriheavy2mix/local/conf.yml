@@ -1,0 +1,49 @@
+# filterbank config
+filterbank:
+  n_filters: 512
+  kernel_size: 16
+  stride: 8
+# Network config
+masknet:
+  n_blocks: 8
+  n_repeats: 3
+  mask_act: relu
+  bn_chan: 128
+  skip_chan: 128
+  hid_chan: 512
+enroll:
+  i_adapt_layer: 7
+  adapt_layer_type: mul
+  adapt_enroll_dim: 128
+# Training config
+training:
+  epochs: 200
+  batch_size: 6
+  num_workers: 4
+  half_lr: yes
+  early_stop: yes
+  reduce_patience: 20
+  stop_patience: 120
+# Optim config
+optim:
+  optimizer: adam
+  lr: 0.001
+  weight_decay: 0.
+  
+# Data config
+train:
+  mixscp: '/star-home/jinzengrui/data/LibriheavyCSS/train_small_2spk_kaldi_fmt/mix.scp'
+  mix2spk: '/star-home/jinzengrui/data/LibriheavyCSS/train_small_2spk_kaldi_fmt/mix2spk'
+  spk2src: '/star-home/jinzengrui/data/LibriheavyCSS/train_small_2spk_kaldi_fmt/spk2src'
+  spk2spk: '/star-home/jinzengrui/data/LibriheavyCSS/train_small_2spk_kaldi_fmt/spk2spk'
+  sample_rate: 8000
+  n_src: 2
+  segment: 4
+  segment_aux: 4
+
+dev:
+  input: '/star-home/jinzengrui/data/LibriheavyCSS/dev_2spk_kaldi_fmt/mix.scp'
+  enrollments: '/star-home/jinzengrui/data/LibriheavyCSS/dev_2spk_kaldi_fmt/enrollment'
+  mix2spk: '/star-home/jinzengrui/data/LibriheavyCSS/dev_2spk_kaldi_fmt/mix2spk'
+  spk2src: '/star-home/jinzengrui/data/LibriheavyCSS/dev_2spk_kaldi_fmt/spk2src'
+  spk2spk: '/star-home/jinzengrui/data/LibriheavyCSS/dev_2spk_kaldi_fmt/spk2spk'

@@ -103,8 +103,8 @@ class LibriheavyMixInformed(Dataset):
             self.target_wav_list = lines_to_dict_spk2spk(spk2spk)
             self.mix2spk = lines_to_dict(mix2spk)
             self.mixed_wav_list = lines_to_dict(mixscp)
-            self.segment = 10
-            self.segment_aux = 10
+            self.segment = 8
+            self.segment_aux = 8
 
     def __len__(self):
         if self.train:

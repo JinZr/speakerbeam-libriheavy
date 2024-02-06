@@ -24,10 +24,9 @@ from pytorch_lightning.callbacks import (
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 
-from models.system import SystemInformed
-from models.td_speakerbeam import TimeDomainSpeakerBeam
-
 from .datasets.libriheavymix_informed import LibriheavyMixInformed
+from .models.system import SystemInformed
+from .models.td_speakerbeam import TimeDomainSpeakerBeam
 
 # Keys which are not in the conf.yml file can be added here.
 # In the hierarchical dictionary created when parsing, the key `key` can be

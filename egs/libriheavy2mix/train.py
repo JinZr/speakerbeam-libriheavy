@@ -41,6 +41,7 @@ parser.add_argument(
 
 
 def neg_sisdr_loss_wrapper(est_targets, targets):
+    est_targets = est_targets.squeeze(1)
     return singlesrc_neg_sisdr(est_targets[:, 0], targets[:, 0]).mean()
 
 

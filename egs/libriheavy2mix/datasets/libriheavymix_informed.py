@@ -150,6 +150,22 @@ class LibriheavyMixInformed(Dataset):
             )
             enroll = torch.from_numpy(enroll[e_start:e_stop])
 
+            mixture = torch.nn.functional.pad(
+                mixture,
+                (0, self.segment * self.sample_rate - mixture.shape[0]),
+                value=0,
+            )
+            source = torch.nn.functional.pad(
+                source,
+                (0, self.segment * self.sample_rate - source.shape[0]),
+                value=0,
+            )
+            enroll = torch.nn.functional.pad(
+                enroll,
+                (0, self.segment_aux * self.sample_rate - enroll.shape[0]),
+                value=0,
+            )
+
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
             assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
         else:
@@ -167,6 +183,22 @@ class LibriheavyMixInformed(Dataset):
             mixture = torch.from_numpy(mixture[: self.sample_rate * self.segment])
             source = torch.from_numpy(source[: self.sample_rate * self.segment])
             enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
+
+            mixture = torch.nn.functional.pad(
+                mixture,
+                (0, self.segment * self.sample_rate - mixture.shape[0]),
+                value=0,
+            )
+            source = torch.nn.functional.pad(
+                source,
+                (0, self.segment * self.sample_rate - source.shape[0]),
+                value=0,
+            )
+            enroll = torch.nn.functional.pad(
+                enroll,
+                (0, self.segment_aux * self.sample_rate - enroll.shape[0]),
+                value=0,
+            )
 
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
             assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"

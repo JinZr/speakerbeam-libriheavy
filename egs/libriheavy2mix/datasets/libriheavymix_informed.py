@@ -133,6 +133,8 @@ class LibriheavyMixInformed(Dataset):
             mixture, _ = librosa.load(mixed_path, sr=self.sample_rate)
             source, _ = librosa.load(target_path, sr=self.sample_rate)
 
+            assert len(mixture) == len(source), f"{len(mixture)} != {len(source)}"
+
             start, stop = self._get_segment_start_stop(
                 self.segment * self.sample_rate, len(mixture)
             )

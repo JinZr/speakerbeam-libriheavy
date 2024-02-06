@@ -143,6 +143,8 @@ class LibriheavyMixInformed(Dataset):
 
             e_start, e_stop = self._get_segment_start_stop(self.segment, len(mixture))
             enroll = torch.from_numpy(enroll[e_start:e_stop])
+
+            assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
         else:
             enroll_key = self.enrollments_keys[idx]
             spkid, dvec_path = self.enrollments[enroll_key]
@@ -158,6 +160,8 @@ class LibriheavyMixInformed(Dataset):
             mixture = torch.from_numpy(mixture[: self.sample_rate * self.segment])
             source = torch.from_numpy(source[: self.sample_rate * self.segment])
             enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
+
+            assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
 
         return mixture, source, enroll
 

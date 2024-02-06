@@ -103,6 +103,8 @@ class LibriheavyMixInformed(Dataset):
             self.target_wav_list = lines_to_dict_spk2spk(spk2spk)
             self.mix2spk = lines_to_dict(mix2spk)
             self.mixed_wav_list = lines_to_dict(mixscp)
+            self.segment = 8
+            self.segment_aux = 8
 
     def __len__(self):
         if self.train:
@@ -131,16 +133,25 @@ class LibriheavyMixInformed(Dataset):
             mixture, _ = librosa.load(mixed_path, sr=self.sample_rate)
             source, _ = librosa.load(target_path, sr=self.sample_rate)
 
-            start, stop = self._get_segment_start_stop(self.segment, len(mixture))
+            start, stop = self._get_segment_start_stop(
+                self.segment * self.sample_rate, len(mixture)
+            )
             while np.count_nonzero(source[start:stop]) < (
                 (self.sample_rate * self.segment) / 2
             ):
-                start, stop = self._get_segment_start_stop(self.segment, len(mixture))
+                start, stop = self._get_segment_start_stop(
+                    self.segment * self.sample_rate, len(mixture)
+                )
             mixture = torch.from_numpy(mixture[start:stop])
             source = torch.from_numpy(source[start:stop])
 
-            e_start, e_stop = self._get_segment_start_stop(self.segment, len(mixture))
+            e_start, e_stop = self._get_segment_start_stop(
+                self.segment * self.sample_rate, len(mixture)
+            )
             enroll = torch.from_numpy(enroll[e_start:e_stop])
+
+            assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
+            assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
         else:
             enroll_key = self.enrollments_keys[idx]
             spkid, dvec_path = self.enrollments[enroll_key]
@@ -153,9 +164,12 @@ class LibriheavyMixInformed(Dataset):
                 self.mixed_wav_list[enroll_key], sr=self.sample_rate
             )
 
-            mixture = torch.from_numpy(mixture)
-            source = torch.from_numpy(source)
-            enroll = torch.from_numpy(enroll)
+            mixture = torch.from_numpy(mixture[: self.sample_rate * self.segment])
+            source = torch.from_numpy(source[: self.sample_rate * self.segment])
+            enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
+
+            assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
+            assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
 
         return mixture, source, enroll
 

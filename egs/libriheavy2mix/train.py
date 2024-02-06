@@ -46,23 +46,23 @@ def neg_sisdr_loss_wrapper(est_targets, targets):
 
 def main(conf):
     train_set = LibriheavyMixInformed(
-        mixscp=conf["train_mixscp"],
-        mix2spk=conf["train_mix2spk"],
-        spk2src=conf["train_spk2src"],
-        spk2spk=conf["train_spk2spk"],
-        sample_rate=conf["train_sample_rate"],
-        segment=conf["train_segment"],
-        segment_aux=conf["train_segment_aux"],
+        mixscp=conf["train"]["train_mixscp"],
+        mix2spk=conf["train"]["train_mix2spk"],
+        spk2src=conf["train"]["train_spk2src"],
+        spk2spk=conf["train"]["train_spk2spk"],
+        sample_rate=conf["train"]["train_sample_rate"],
+        segment=conf["train"]["train_segment"],
+        segment_aux=conf["train"]["train_segment_aux"],
         train=True,
     )
 
     val_set = LibriheavyMixInformed(
-        mixscp=conf["dev_mixscp"],
-        mix2spk=conf["dev_mix2spk"],
-        spk2src=conf["dev_spk2src"],
-        spk2spk=conf["dev_spk2spk"],
-        enrollments=conf["dev_enrollments"],
-        sample_rate=conf["dev_sample_rate"],
+        mixscp=conf["dev"]["dev_mixscp"],
+        mix2spk=conf["dev"]["dev_mix2spk"],
+        spk2src=conf["dev"]["dev_spk2src"],
+        spk2spk=conf["dev"]["dev_spk2spk"],
+        enrollments=conf["dev"]["dev_enrollments"],
+        sample_rate=conf["dev"]["dev_sample_rate"],
         train=False,
     )
 

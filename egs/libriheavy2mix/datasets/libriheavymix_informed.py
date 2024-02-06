@@ -141,7 +141,7 @@ class LibriheavyMixInformed(Dataset):
                 self.segment * self.sample_rate, len(mixture)
             )
             while np.count_nonzero(source[start:stop]) < (
-                (self.sample_rate * self.segment) / 2
+                self.sample_rate * (self.segment - 1)
             ):
                 start, stop = self._get_segment_start_stop(
                     self.segment * self.sample_rate, len(mixture)

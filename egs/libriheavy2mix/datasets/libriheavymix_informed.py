@@ -114,6 +114,8 @@ class LibriheavyMixInformed(Dataset):
 
     def _get_segment_start_stop(self, seg_len, length):
         if seg_len is not None:
+            if length < seg_len:
+                return 0, length
             start = random.randint(0, length - seg_len)
             stop = start + seg_len
         else:

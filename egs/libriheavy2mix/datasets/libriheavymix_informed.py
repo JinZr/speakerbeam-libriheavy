@@ -195,10 +195,10 @@ class LibriheavyMixInformed(Dataset):
 
             if not self.test:
                 mixture = torch.from_numpy(
-                    mixture[self.sample_rate : self.sample_rate * 8]
+                    mixture[self.sample_rate : self.sample_rate * 4]
                 )
                 source = torch.from_numpy(
-                    source[self.sample_rate : self.sample_rate * 8]
+                    source[self.sample_rate : self.sample_rate * 4]
                 )
                 enroll = torch.from_numpy(
                     enroll[self.sample_rate : self.sample_rate * self.segment_aux]

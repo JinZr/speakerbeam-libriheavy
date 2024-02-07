@@ -10,8 +10,6 @@
 import argparse
 import json
 import os
-import random
-from pathlib import Path
 from pprint import pprint
 
 import pandas as pd
@@ -27,15 +25,6 @@ from datasets.libriheavymix_informed import LibriheavyMixInformed
 from models.td_speakerbeam import TimeDomainSpeakerBeam
 
 parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--test_dir", type=str, required=True, help="Test directory including the csv files"
-)
-parser.add_argument(
-    "--task",
-    type=str,
-    required=True,
-    help="One of `enh_single`, `enh_both`, " "`sep_clean` or `sep_noisy`",
-)
 
 parser.add_argument(
     "--model_path",
@@ -63,7 +52,7 @@ parser.add_argument(
 )
 parser.add_argument("--exp_dir", default="exp/tmp", help="Experiment root")
 
-COMPUTE_METRICS = ["si_sdr", "sdr", "sir", "sar", "stoi"]
+COMPUTE_METRICS = ["si_sdr", "sdr"]
 
 
 def main(conf):
@@ -161,11 +150,5 @@ if __name__ == "__main__":
         train_conf = yaml.safe_load(f)
     arg_dic["sample_rate"] = train_conf["data"]["sample_rate"]
     arg_dic["train_conf"] = train_conf
-
-    if args.task != arg_dic["train_conf"]["data"]["task"]:
-        print(
-            "Warning : the task used to test is different than "
-            "the one from training, be sure this is what you want."
-        )
 
     main(arg_dic)

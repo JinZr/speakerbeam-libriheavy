@@ -188,6 +188,8 @@ class LibriheavyMixInformed(Dataset):
             mixture, _ = librosa.load(
                 self.mixed_wav_list[enroll_key], sr=self.sample_rate
             )
+            self.mixture_path = self.mixed_wav_list[enroll_key]
+            self.target_speaker_idx = spkid
 
             # mixture = torch.from_numpy(mixture[: self.sample_rate * 12])
             # source = torch.from_numpy(source[: self.sample_rate * 12])

@@ -75,12 +75,12 @@ def main(conf):
         model.cuda()
     model_device = next(model.parameters()).device
     test_set = LibriheavyMixInformed(
-        mixscp=conf["dev"]["dev_mixscp"],
-        mix2spk=conf["dev"]["dev_mix2spk"],
-        spk2src=conf["dev"]["dev_spk2src"],
-        spk2spk=conf["dev"]["dev_spk2spk"],
-        enrollments=conf["dev"]["dev_enrollments"],
-        sample_rate=conf["dev"]["dev_sample_rate"],
+        mixscp=conf["train_conf"]["dev"]["dev_mixscp"],
+        mix2spk=conf["train_conf"]["dev"]["dev_mix2spk"],
+        spk2src=conf["train_conf"]["dev"]["dev_spk2src"],
+        spk2spk=conf["train_conf"]["dev"]["dev_spk2spk"],
+        enrollments=conf["train_conf"]["dev"]["dev_enrollments"],
+        sample_rate=conf["train_conf"]["dev"]["dev_sample_rate"],
         train=False,
         segment=None,
         segment_aux=None,
@@ -105,7 +105,7 @@ def main(conf):
             mix_np,
             source_np,
             est_source_np,
-            sample_rate=conf["dev"]["dev_sample_rate"],
+            sample_rate=conf["sample_rate"],
             metrics_list=COMPUTE_METRICS,
         )
         utt_metrics["mix_path"] = test_set.mixture_path
@@ -119,7 +119,7 @@ def main(conf):
         sf.write(
             local_save_dir + f"{mixture_name}_" f"s{test_set.target_speaker_idx}.wav",
             est_source_np_normalized[0],
-            conf["dev"]["dev_sample_rate"],
+            conf["sample_rate"],
         )
 
     # Save all metrics to the experiment folder.

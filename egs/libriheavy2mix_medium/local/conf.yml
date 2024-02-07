@@ -1,13 +1,13 @@
 # filterbank config
 filterbank:
   n_filters: 512
-  kernel_size: 16
+  kernel_size: 40
   stride: 8
 # Network config
 masknet:
   n_blocks: 8
   n_repeats: 3
-  mask_act: relu
+  mask_act: sigmoid
   encoder_activation: prelu
   bn_chan: 256
   skip_chan: 256
@@ -19,7 +19,7 @@ enroll:
 # Training config
 training:
   epochs: 200
-  batch_size: 8
+  batch_size: 6
   num_workers: 4
   half_lr: yes
   early_stop: yes
@@ -39,8 +39,8 @@ train:
   train_spk2spk: '/star-home/jinzengrui/data/LibriheavyCSS/train_medium_2spk_kaldi_fmt/spk2spk'
   train_sample_rate: 8000
   train_n_src: 2
-  train_segment: 4
-  train_segment_aux: 4
+  train_segment: 6
+  train_segment_aux: 6
 
 # Data config
 dev:

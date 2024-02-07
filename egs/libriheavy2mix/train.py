@@ -55,6 +55,7 @@ def main(conf):
         segment=conf["train"]["train_segment"],
         segment_aux=conf["train"]["train_segment_aux"],
         train=True,
+        test=False,
     )
 
     val_set = LibriheavyMixInformed(

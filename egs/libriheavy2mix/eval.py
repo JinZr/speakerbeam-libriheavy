@@ -82,6 +82,7 @@ def main(conf):
         enrollments=conf["train_conf"]["dev"]["dev_enrollments"],
         sample_rate=conf["train_conf"]["dev"]["dev_sample_rate"],
         train=False,
+        test=True,
         segment=None,
         segment_aux=None,
     )  # Uses all segment length

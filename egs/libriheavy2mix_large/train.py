@@ -15,8 +15,11 @@ import pytorch_lightning as pl
 import torch
 from asteroid.engine.optimizers import make_optimizer
 from asteroid.losses import singlesrc_neg_sisdr, singlesrc_neg_snr
-from pytorch_lightning.callbacks import (EarlyStopping, LearningRateMonitor,
-                                         ModelCheckpoint)
+from pytorch_lightning.callbacks import (
+    EarlyStopping,
+    LearningRateMonitor,
+    ModelCheckpoint,
+)
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 
@@ -52,6 +55,7 @@ def main(conf):
         segment=conf["train"]["train_segment"],
         segment_aux=conf["train"]["train_segment_aux"],
         train=True,
+        test=False,
     )
 
     val_set = LibriheavyMixInformed(
@@ -62,6 +66,7 @@ def main(conf):
         enrollments=conf["dev"]["dev_enrollments"],
         sample_rate=conf["dev"]["dev_sample_rate"],
         train=False,
+        test=False,
     )
 
     train_loader = DataLoader(

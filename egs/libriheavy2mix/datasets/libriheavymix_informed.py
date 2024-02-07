@@ -40,6 +40,7 @@ class LibriheavyMixInformed(Dataset):
         segment=4,
         segment_aux=4,
         train=True,
+        test=False,
     ):
         def lines_to_dict(file_path):
             res = dict()
@@ -86,6 +87,7 @@ class LibriheavyMixInformed(Dataset):
             return res
 
         self.train = train
+        self.test = test
         self.sample_rate = sample_rate
         self.segment = segment
         self.segment_aux = segment_aux
@@ -191,15 +193,20 @@ class LibriheavyMixInformed(Dataset):
             self.mixture_path = self.mixed_wav_list[enroll_key]
             self.target_speaker_idx = spkid
 
-            mixture = torch.from_numpy(mixture[self.sample_rate : self.sample_rate * 8])
-            source = torch.from_numpy(source[self.sample_rate : self.sample_rate * 8])
-            enroll = torch.from_numpy(
-                enroll[self.sample_rate : self.sample_rate * self.segment_aux]
-            )
-
-            # mixture = torch.from_numpy(mixture)
-            # source = torch.from_numpy(source)
-            # enroll = torch.from_numpy(enroll)
+            if not self.test:
+                mixture = torch.from_numpy(
+                    mixture[self.sample_rate : self.sample_rate * 8]
+                )
+                source = torch.from_numpy(
+                    source[self.sample_rate : self.sample_rate * 8]
+                )
+                enroll = torch.from_numpy(
+                    enroll[self.sample_rate : self.sample_rate * self.segment_aux]
+                )
+            else:
+                mixture = torch.from_numpy(mixture)
+                source = torch.from_numpy(source)
+                enroll = torch.from_numpy(enroll)
 
             # mixture = torch.nn.functional.pad(
             #     mixture,

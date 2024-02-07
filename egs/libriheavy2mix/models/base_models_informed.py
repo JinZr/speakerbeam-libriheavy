@@ -4,9 +4,12 @@
 # By Katerina Zmolikova, August 2021.
 
 import torch
-from asteroid.utils.torch_utils import pad_x_to_y, jitable_shape
-from asteroid.models.base_models import _shape_reconstructed, _unsqueeze_to_3d
-from asteroid.models.base_models import BaseEncoderMaskerDecoder
+from asteroid.models.base_models import (
+    BaseEncoderMaskerDecoder,
+    _shape_reconstructed,
+    _unsqueeze_to_3d,
+)
+from asteroid.utils.torch_utils import jitable_shape, pad_x_to_y
 
 
 class BaseEncoderMaskerDecoderInformed(BaseEncoderMaskerDecoder):

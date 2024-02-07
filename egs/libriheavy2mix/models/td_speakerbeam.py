@@ -5,10 +5,11 @@
 
 import torch
 import torch.nn as nn
-from asteroid_filterbanks import make_enc_dec
 from asteroid.masknn.convolutional import TDConvNet
-from models.base_models_informed import BaseEncoderMaskerDecoderInformed
+from asteroid_filterbanks import make_enc_dec
+
 from models.adapt_layers import make_adapt_layer
+from models.base_models_informed import BaseEncoderMaskerDecoderInformed
 
 
 class Lambda(nn.Module):

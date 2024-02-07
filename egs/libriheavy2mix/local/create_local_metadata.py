@@ -2,9 +2,9 @@
 # which is released under the following MIT license:
 # https://github.com/asteroid-team/asteroid/blob/master/LICENSE
 
+import argparse
 import os
 import shutil
-import argparse
 from glob import glob
 
 # Command line arguments

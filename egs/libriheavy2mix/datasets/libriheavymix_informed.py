@@ -110,7 +110,7 @@ class LibriheavyMixInformed(Dataset):
         if self.train:
             return len(self.mix2spk_keys)
         else:
-            return len(self.enrollments)
+            return len(self.enrollments_keys)
 
     def _get_segment_start_stop(self, seg_len, length):
         if seg_len is not None:

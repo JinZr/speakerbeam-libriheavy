@@ -8,7 +8,6 @@ masknet:
   n_blocks: 8
   n_repeats: 3
   mask_act: sigmoid
-  encoder_activation: prelu
   bn_chan: 256
   skip_chan: 256
   hid_chan: 512

@@ -37,7 +37,7 @@ parser.add_argument(
 parser.add_argument(
     "--from_checkpoint",
     type=int,
-    default=0,
+    default=1,
     help="Model in model path is checkpoint, not final model. Default: 0",
 )
 

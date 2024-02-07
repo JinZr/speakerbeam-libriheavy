@@ -6,7 +6,7 @@ filterbank:
 # Network config
 masknet:
   n_blocks: 8
-  n_repeats: 4
+  n_repeats: 3
   mask_act: prelu
   bn_chan: 256
   skip_chan: 256

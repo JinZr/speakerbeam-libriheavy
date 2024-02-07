@@ -1,7 +1,7 @@
 # filterbank config
 filterbank:
   n_filters: 512
-  kernel_size: 40
+  kernel_size: 16
   stride: 8
 # Network config
 masknet:

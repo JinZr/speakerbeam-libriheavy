@@ -105,7 +105,7 @@ def main(conf):
             mix_np,
             source_np,
             est_source_np,
-            sample_rate=conf["sample_rate"],
+            sample_rate=conf["dev"]["dev_sample_rate"],
             metrics_list=COMPUTE_METRICS,
         )
         utt_metrics["mix_path"] = test_set.mixture_path
@@ -119,7 +119,7 @@ def main(conf):
         sf.write(
             local_save_dir + f"{mixture_name}_" f"s{test_set.target_speaker_idx}.wav",
             est_source_np_normalized[0],
-            conf["sample_rate"],
+            conf["dev"]["dev_sample_rate"],
         )
 
     # Save all metrics to the experiment folder.
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     conf_path = os.path.join(args.exp_dir, "conf.yml")
     with open(conf_path) as f:
         train_conf = yaml.safe_load(f)
-    arg_dic["sample_rate"] = train_conf["data"]["sample_rate"]
+    arg_dic["sample_rate"] = train_conf["dev"]["dev_sample_rate"]
     arg_dic["train_conf"] = train_conf
 
     main(arg_dic)

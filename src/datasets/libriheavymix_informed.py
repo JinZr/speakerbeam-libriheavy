@@ -8,7 +8,6 @@ from collections import defaultdict
 
 import librosa
 import numpy as np
-import soundfile as sf
 import torch
 from torch.utils.data import Dataset
 
@@ -114,6 +113,8 @@ class LibriheavyMixInformed(Dataset):
 
     def _get_segment_start_stop(self, seg_len, length):
         if seg_len is not None:
+            if length < seg_len:
+                return 0, length
             start = random.randint(0, length - seg_len)
             stop = start + seg_len
         else:
@@ -133,22 +134,45 @@ class LibriheavyMixInformed(Dataset):
             mixture, _ = librosa.load(mixed_path, sr=self.sample_rate)
             source, _ = librosa.load(target_path, sr=self.sample_rate)
 
+            assert len(mixture) == len(source), f"{len(mixture)} != {len(source)}"
+
             start, stop = self._get_segment_start_stop(
                 self.segment * self.sample_rate, len(mixture)
             )
+            index = 0
             while np.count_nonzero(source[start:stop]) < (
-                (self.sample_rate * self.segment) / 2
+                self.sample_rate * (self.segment - 1)
             ):
-                start, stop = self._get_segment_start_stop(
-                    self.segment * self.sample_rate, len(mixture)
-                )
+                index += 1
+                if index > 10:
+                    break
+                else:
+                    start, stop = self._get_segment_start_stop(
+                        self.segment * self.sample_rate, len(mixture)
+                    )
             mixture = torch.from_numpy(mixture[start:stop])
             source = torch.from_numpy(source[start:stop])
 
             e_start, e_stop = self._get_segment_start_stop(
-                self.segment * self.sample_rate, len(enroll)
+                self.segment_aux * self.sample_rate, len(enroll)
             )
             enroll = torch.from_numpy(enroll[e_start:e_stop])
+
+            mixture = torch.nn.functional.pad(
+                mixture,
+                (0, self.segment * self.sample_rate - mixture.shape[0]),
+                value=0,
+            )
+            source = torch.nn.functional.pad(
+                source,
+                (0, self.segment * self.sample_rate - source.shape[0]),
+                value=0,
+            )
+            enroll = torch.nn.functional.pad(
+                enroll,
+                (0, self.segment_aux * self.sample_rate - enroll.shape[0]),
+                value=0,
+            )
 
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
             assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
@@ -164,14 +188,30 @@ class LibriheavyMixInformed(Dataset):
                 self.mixed_wav_list[enroll_key], sr=self.sample_rate
             )
 
-            mixture = torch.from_numpy(mixture[: self.sample_rate * self.segment])
-            source = torch.from_numpy(source[: self.sample_rate * self.segment])
+            mixture = torch.from_numpy(mixture[: self.sample_rate * 12])
+            source = torch.from_numpy(source[: self.sample_rate * 12])
             enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
+
+            mixture = torch.nn.functional.pad(
+                mixture,
+                (0, self.sample_rate * 12 - mixture.shape[0]),
+                value=0,
+            )
+            source = torch.nn.functional.pad(
+                source,
+                (0, self.sample_rate * 12 - source.shape[0]),
+                value=0,
+            )
+            enroll = torch.nn.functional.pad(
+                enroll,
+                (0, self.segment_aux * self.sample_rate - enroll.shape[0]),
+                value=0,
+            )
 
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
             assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
 
-        return mixture, source, enroll
+        return mixture, source.unsqueeze(0), enroll
 
     def get_infos(self):
         return "LibriheavyMix"

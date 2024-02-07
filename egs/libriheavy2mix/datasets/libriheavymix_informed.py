@@ -189,9 +189,15 @@ class LibriheavyMixInformed(Dataset):
                 self.mixed_wav_list[enroll_key], sr=self.sample_rate
             )
 
-            mixture = torch.from_numpy(mixture[: self.sample_rate * self.segment])
-            source = torch.from_numpy(source[: self.sample_rate * self.segment])
-            enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
+            mixture = torch.from_numpy(
+                mixture[2 * self.sample_rate : self.sample_rate * self.segment]
+            )
+            source = torch.from_numpy(
+                source[2 * self.sample_rate : self.sample_rate * self.segment]
+            )
+            enroll = torch.from_numpy(
+                enroll[2 * self.sample_rate : self.sample_rate * self.segment_aux]
+            )
 
             mixture = torch.nn.functional.pad(
                 mixture,

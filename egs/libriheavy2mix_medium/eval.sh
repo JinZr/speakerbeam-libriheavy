@@ -1,7 +1,7 @@
 
 
 OMP_NUM_THREADS=1 python eval.py \
-    --model_path ./medium/checkpoints/epoch\=78-step\=17696.ckpt \
+    --model_path ./medium/checkpoints/epoch\=1-step\=4160.ckpt \
     --exp_dir ./medium/ \
     --use_gpu 1 \
-    --out_dir ./epoch78
+    --out_dir ./epoch01

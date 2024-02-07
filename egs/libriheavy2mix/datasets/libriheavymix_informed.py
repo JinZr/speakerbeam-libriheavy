@@ -194,11 +194,12 @@ class LibriheavyMixInformed(Dataset):
             self.target_speaker_idx = spkid
 
             if not self.test:
+                non_zero_start = (source != 0).argmax(axis=0)
                 mixture = torch.from_numpy(
-                    mixture[self.sample_rate : self.sample_rate * 4]
+                    mixture[non_zero_start : non_zero_start + self.sample_rate * 4]
                 )
                 source = torch.from_numpy(
-                    source[self.sample_rate : self.sample_rate * 4]
+                    source[non_zero_start : non_zero_start + self.sample_rate * 4]
                 )
                 enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
             else:

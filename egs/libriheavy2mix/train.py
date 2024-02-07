@@ -65,6 +65,7 @@ def main(conf):
         enrollments=conf["dev"]["dev_enrollments"],
         sample_rate=conf["dev"]["dev_sample_rate"],
         train=False,
+        test=False,
     )
 
     train_loader = DataLoader(

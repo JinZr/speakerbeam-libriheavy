@@ -140,12 +140,17 @@ class LibriheavyMixInformed(Dataset):
             start, stop = self._get_segment_start_stop(
                 self.segment * self.sample_rate, len(mixture)
             )
+            index = 0
             while np.count_nonzero(source[start:stop]) < (
                 self.sample_rate * (self.segment - 1)
             ):
-                start, stop = self._get_segment_start_stop(
-                    self.segment * self.sample_rate, len(mixture)
-                )
+                index += 1
+                if index > 10:
+                    break
+                else:
+                    start, stop = self._get_segment_start_stop(
+                        self.segment * self.sample_rate, len(mixture)
+                    )
             mixture = torch.from_numpy(mixture[start:stop])
             source = torch.from_numpy(source[start:stop])
 

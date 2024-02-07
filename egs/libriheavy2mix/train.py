@@ -13,9 +13,8 @@ import os
 
 import pytorch_lightning as pl
 import torch
-import torch.nn as nn
 from asteroid.engine.optimizers import make_optimizer
-from asteroid.losses import singlesrc_neg_sisdr
+from asteroid.losses import singlesrc_neg_sisdr, singlesrc_neg_snr
 from pytorch_lightning.callbacks import (
     EarlyStopping,
     LearningRateMonitor,
@@ -41,8 +40,8 @@ parser.add_argument(
 
 
 def neg_sisdr_loss_wrapper(est_targets, targets):
-    targets = targets.unsqueeze(1)
-    return singlesrc_neg_sisdr(est_targets[:, 0], targets[:, 0]).mean()
+    return singlesrc_neg_snr(est_targets[:, 0], targets[:, 0]).mean()
+    # return singlesrc_neg_sisdr(est_targets[:, 0], targets[:, 0]).mean()
 
 
 def main(conf):

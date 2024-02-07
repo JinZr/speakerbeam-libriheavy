@@ -79,7 +79,7 @@ class LibriheavyMixInformed(Dataset):
                 lines = f.readlines()
             for line in lines:
                 key, _, spkid, enroll, index = line.strip().split(",")
-                res[key] = (
+                res[f"{key}+{spkid}"] = (
                     spkid,
                     f"/star-data/rui/libriheavy_ovlp_src_reverb/dev_2spk/{enroll}/{index}.flac",
                 )
@@ -178,7 +178,7 @@ class LibriheavyMixInformed(Dataset):
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
             assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
         else:
-            enroll_key = self.enrollments_keys[idx]
+            enroll_key, spkid = self.enrollments_keys[idx].split("+")
             spkid, dvec_path = self.enrollments[enroll_key]
             enroll, _ = librosa.load(dvec_path, sr=self.sample_rate)
 

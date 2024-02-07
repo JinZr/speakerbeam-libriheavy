@@ -8,13 +8,14 @@ masknet:
   n_blocks: 8
   n_repeats: 3
   mask_act: relu
+  encoder_activation: prelu
   bn_chan: 256
   skip_chan: 256
   hid_chan: 512
 enroll:
   i_adapt_layer: 7
-  adapt_layer_type: mul
-  adapt_enroll_dim: 256
+  adapt_layer_type: muladd
+  adapt_enroll_dim: 512
 # Training config
 training:
   epochs: 200

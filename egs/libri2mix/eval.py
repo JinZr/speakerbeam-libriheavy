@@ -7,24 +7,24 @@
 # which is released under the following MIT license:
 # https://github.com/asteroid-team/asteroid/blob/master/LICENSE
 
+import argparse
+import json
 import os
 import random
+from pathlib import Path
+from pprint import pprint
+
+import pandas as pd
 import soundfile as sf
 import torch
 import yaml
-import json
-import argparse
-import pandas as pd
-from tqdm import tqdm
-from pprint import pprint
-from pathlib import Path
-
+from asteroid.dsp.normalization import normalize_estimates
 from asteroid.metrics import get_metrics
 from asteroid.utils import tensors_to_device
-from asteroid.dsp.normalization import normalize_estimates
+from tqdm import tqdm
 
-from models.td_speakerbeam import TimeDomainSpeakerBeam
 from datasets.librimix_informed import LibriMixInformed
+from models.td_speakerbeam import TimeDomainSpeakerBeam
 
 parser = argparse.ArgumentParser()
 parser.add_argument(

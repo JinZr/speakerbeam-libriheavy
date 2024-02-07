@@ -7,23 +7,23 @@
 # which is released under the following MIT license:
 # https://github.com/asteroid-team/asteroid/blob/master/LICENSE
 
-import os
 import argparse
 import json
+import os
 
+import pytorch_lightning as pl
 import torch
 import torch.nn as nn
+from asteroid.engine.optimizers import make_optimizer
+from asteroid.losses import singlesrc_neg_sisdr
+from pytorch_lightning.callbacks import (EarlyStopping, LearningRateMonitor,
+                                         ModelCheckpoint)
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
-import pytorch_lightning as pl
-from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
-from pytorch_lightning.callbacks import LearningRateMonitor
 
-from models.td_speakerbeam import TimeDomainSpeakerBeam
 from datasets.librimix_informed import LibriMixInformed
-from asteroid.engine.optimizers import make_optimizer
 from models.system import SystemInformed
-from asteroid.losses import singlesrc_neg_sisdr
+from models.td_speakerbeam import TimeDomainSpeakerBeam
 
 # Keys which are not in the conf.yml file can be added here.
 # In the hierarchical dictionary created when parsing, the key `key` can be
@@ -158,9 +158,10 @@ def main(conf):
 
 
 if __name__ == "__main__":
-    import yaml
     from pprint import pprint
-    from asteroid.utils import prepare_parser_from_dict, parse_args_as_dict
+
+    import yaml
+    from asteroid.utils import parse_args_as_dict, prepare_parser_from_dict
 
     # We start with opening the config file conf.yml as a dictionary from
     # which we can create parsers. Each top level key in the dictionary defined

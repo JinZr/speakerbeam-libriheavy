@@ -15,11 +15,8 @@ import pytorch_lightning as pl
 import torch
 from asteroid.engine.optimizers import make_optimizer
 from asteroid.losses import singlesrc_neg_sisdr, singlesrc_neg_snr
-from pytorch_lightning.callbacks import (
-    EarlyStopping,
-    LearningRateMonitor,
-    ModelCheckpoint,
-)
+from pytorch_lightning.callbacks import (EarlyStopping, LearningRateMonitor,
+                                         ModelCheckpoint)
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 

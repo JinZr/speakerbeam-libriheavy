@@ -6,7 +6,6 @@
 from collections.abc import MutableMapping
 
 import pytorch_lightning as pl
-
 # from asteroid.engine import System
 import torch
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -158,7 +157,7 @@ class System(pl.LightningModule):
             batch_nb (int): The number of the batch in the epoch.
         """
         loss = self.common_step(batch, batch_nb, train=False)
-        self.log("val_loss", loss, on_epoch=True, prog_bar=True)
+        self.log("val_loss", loss, on_epoch=True, prog_bar=True, sync_dist=True)
 
     def on_validation_epoch_end(self):
         """Log hp_metric to tensorboard for hparams selection."""

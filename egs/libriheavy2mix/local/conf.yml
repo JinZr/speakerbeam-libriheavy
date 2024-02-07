@@ -14,7 +14,7 @@ masknet:
   hid_chan: 512
 enroll:
   i_adapt_layer: 7
-  adapt_layer_type: muladd
+  adapt_layer_type: mul
   adapt_enroll_dim: 512
 # Training config
 training:

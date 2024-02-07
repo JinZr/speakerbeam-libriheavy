@@ -188,28 +188,32 @@ class LibriheavyMixInformed(Dataset):
                 self.mixed_wav_list[enroll_key], sr=self.sample_rate
             )
 
-            mixture = torch.from_numpy(mixture[: self.sample_rate * 12])
-            source = torch.from_numpy(source[: self.sample_rate * 12])
-            enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
+            # mixture = torch.from_numpy(mixture[: self.sample_rate * 12])
+            # source = torch.from_numpy(source[: self.sample_rate * 12])
+            # enroll = torch.from_numpy(enroll[: self.sample_rate * self.segment_aux])
 
-            mixture = torch.nn.functional.pad(
-                mixture,
-                (0, self.sample_rate * 12 - mixture.shape[0]),
-                value=0,
-            )
-            source = torch.nn.functional.pad(
-                source,
-                (0, self.sample_rate * 12 - source.shape[0]),
-                value=0,
-            )
-            enroll = torch.nn.functional.pad(
-                enroll,
-                (0, self.segment_aux * self.sample_rate - enroll.shape[0]),
-                value=0,
-            )
+            mixture = torch.from_numpy(mixture)
+            source = torch.from_numpy(source)
+            enroll = torch.from_numpy(enroll)
+
+            # mixture = torch.nn.functional.pad(
+            #     mixture,
+            #     (0, self.sample_rate * 12 - mixture.shape[0]),
+            #     value=0,
+            # )
+            # source = torch.nn.functional.pad(
+            #     source,
+            #     (0, self.sample_rate * 12 - source.shape[0]),
+            #     value=0,
+            # )
+            # enroll = torch.nn.functional.pad(
+            #     enroll,
+            #     (0, self.segment_aux * self.sample_rate - enroll.shape[0]),
+            #     value=0,
+            # )
 
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
-            assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
+            # assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
 
         return mixture, source.unsqueeze(0), enroll
 

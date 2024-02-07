@@ -7,24 +7,24 @@
 # which is released under the following MIT license:
 # https://github.com/asteroid-team/asteroid/blob/master/LICENSE
 
+import argparse
+import json
 import os
 import random
+from pathlib import Path
+from pprint import pprint
+
+import pandas as pd
 import soundfile as sf
 import torch
 import yaml
-import json
-import argparse
-import pandas as pd
-from tqdm import tqdm
-from pprint import pprint
-from pathlib import Path
-
+from asteroid.dsp.normalization import normalize_estimates
 from asteroid.metrics import get_metrics
 from asteroid.utils import tensors_to_device
-from asteroid.dsp.normalization import normalize_estimates
+from tqdm import tqdm
 
+from datasets.libriheavymix_informed import LibriheavyMixInformed
 from models.td_speakerbeam import TimeDomainSpeakerBeam
-from datasets.librimix_informed import LibriMixInformed
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -85,11 +85,14 @@ def main(conf):
     if conf["use_gpu"]:
         model.cuda()
     model_device = next(model.parameters()).device
-    test_set = LibriMixInformed(
-        csv_dir=conf["test_dir"],
-        task=conf["task"],
-        sample_rate=conf["sample_rate"],
-        n_src=conf["train_conf"]["data"]["n_src"],
+    test_set = LibriheavyMixInformed(
+        mixscp=conf["dev"]["dev_mixscp"],
+        mix2spk=conf["dev"]["dev_mix2spk"],
+        spk2src=conf["dev"]["dev_spk2src"],
+        spk2spk=conf["dev"]["dev_spk2spk"],
+        enrollments=conf["dev"]["dev_enrollments"],
+        sample_rate=conf["dev"]["dev_sample_rate"],
+        train=False,
         segment=None,
         segment_aux=None,
     )  # Uses all segment length

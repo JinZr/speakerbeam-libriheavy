@@ -210,7 +210,7 @@ class LibriheavyMixInformed(Dataset):
             )
 
             assert mixture.shape == source.shape, f"{mixture.shape} != {source.shape}"
-            assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
+            # assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
 
         return mixture, source.unsqueeze(0), enroll
 

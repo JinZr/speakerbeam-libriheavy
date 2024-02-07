@@ -179,7 +179,7 @@ class LibriheavyMixInformed(Dataset):
             assert mixture.shape == enroll.shape, f"{mixture.shape} != {enroll.shape}"
         else:
             enroll_key, spkid = self.enrollments_keys[idx].split("+")
-            spkid, dvec_path = self.enrollments[enroll_key]
+            spkid, dvec_path = self.enrollments[f"{enroll_key}+{spkid}"]
             enroll, _ = librosa.load(dvec_path, sr=self.sample_rate)
 
             source, _ = librosa.load(

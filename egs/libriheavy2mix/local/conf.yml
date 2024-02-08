@@ -17,12 +17,12 @@ enroll:
   adapt_enroll_dim: 512
 # Training config
 training:
-  epochs: 200
-  batch_size: 6
+  epochs: 400
+  batch_size: 7
   num_workers: 4
   half_lr: yes
   early_stop: yes
-  reduce_patience: 20
+  reduce_patience: 5
   stop_patience: 120
 # Optim config
 optim:
